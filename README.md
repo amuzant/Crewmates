@@ -35,8 +35,8 @@ Crewmates is a modern team project management platform built with Next.js, Prism
 
 1. Clone the repository: 
 ```bash
-git clone https://github.com/yourusername/crewmates.git
-cd crewmates
+git clone https://github.com/amuzant/Crewmates.git
+cd Crewmates
 ```
 2. Install dependencies:
 ```bash
