@@ -1,8 +1,9 @@
 # Crewmates - Team Project Management Platform
+This project was created for the 2024 edition of HackitAll
 
-Crewmates is a modern team project management platform built with Next.js, Prisma, and TypeScript. It helps teams track projects, manage sprints, and reward achievements through a gamified experience.
+Crewmates is a modern team project management platform built with Next.js, Prisma, and TypeScript. It helps teams track projects, manage sprints, and reward achievements through a gamified experience, all while being a fun and engaging way to work together. Everybody wins!
 
-## Features
+## Here's what makes Crewmates unique:
 
 - 🏆 Sprint-based Project Management
 - 🎯 Project Rankings and Leaderboards
@@ -33,3 +34,23 @@ Crewmates is a modern team project management platform built with Next.js, Prism
 ### Installation
 
 1. Clone the repository: 
+```bash
+git clone https://github.com/yourusername/crewmates.git
+cd crewmates
+```
+2. Install dependencies:
+```bash
+npm install
+```
+3. Set up environment variables:
+```bash
+cp .env.example .env
+```
+4. Initialize Prisma:
+```bash
+npx prisma migrate dev
+```
+5. Start the development server:
+```bash
+npm run dev
+```
