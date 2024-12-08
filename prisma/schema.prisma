@@ -1,0 +1,243 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique // 'ADMIN', 'TEAM_LEADER', 'TEAM_MEMBER'
+  displayName String   // 'Admin', 'Team Leader', 'Team Member'
+  users       User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id              Int                 @id @default(autoincrement())
+  email           String              @unique
+  username        String              @unique
+  displayName     String              // Add this field
+  password        String
+  role            Role                @relation(fields: [roleId], references: [id])
+  roleId          Int
+  profile         Profile?
+  teamsLed        Team[]              @relation("TeamLeader")
+  teamMemberships TeamMembership[]
+  messages        Message[]
+  chatsCreated    Chat[]              @relation("ChatCreator")
+  chatMemberships ChatMembership[]
+  projects        Project[]           @relation("ProjectHistory")
+  projectParticipations ProjectLeader[]
+  tasks           Task[]
+  taskAssignments TaskAssignment[]
+  badges          Badge[]
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  progress        Progress[]
+  wonPrizes      Prize[]
+  prizeClaims    PrizeClaim[]
+}
+
+model Profile {
+  id      Int      @id @default(autoincrement())
+  userId  Int      @unique
+  user    User     @relation(fields: [userId], references: [id])
+  avatar  String?
+}
+
+model Team {
+  id           Int              @id @default(autoincrement())
+  name         String
+  description  String?
+  leaderId     Int
+  leader       User             @relation("TeamLeader", fields: [leaderId], references: [id])
+  members      TeamMembership[]
+  messages     Message[]
+  projects     Project[]        @relation("TeamProjects")
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model TeamMembership {
+  id        Int      @id @default(autoincrement())
+  teamId    Int
+  userId    Int
+  team      Team     @relation(fields: [teamId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  role      String
+  joinedAt  DateTime @default(now())
+
+  @@unique([teamId, userId])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  userId    Int
+  projectId Int?
+  teamId    Int?
+  chatId    Int?
+  user      User     @relation(fields: [userId], references: [id])
+  project   Project? @relation(fields: [projectId], references: [id])
+  team      Team?    @relation(fields: [teamId], references: [id])
+  chat      Chat?    @relation(fields: [chatId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Chat {
+  id        Int              @id @default(autoincrement())
+  name      String?
+  creatorId Int
+  creator   User             @relation("ChatCreator", fields: [creatorId], references: [id])
+  members   ChatMembership[]
+  messages  Message[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model ChatMembership {
+  id        Int      @id @default(autoincrement())
+  chatId    Int
+  userId    Int
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  joinedAt  DateTime @default(now())
+
+  @@unique([chatId, userId])
+}
+
+model Sprint {
+  id                Int       @id @default(autoincrement())
+  name              String
+  startDate         DateTime
+  endDate           DateTime
+  isCompleted       Boolean   @default(false)
+  hasPrize          Boolean   @default(false)  // Flag for prize availability
+  prize             Prize?    @relation(fields: [prizeId], references: [id])
+  prizeId           Int?
+  lastUpdated       DateTime?
+  projects          Project[]
+  rankings          Ranking[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Project {
+  id          Int            @id @default(autoincrement())
+  name        String
+  description String?
+  sprint      Sprint?        @relation(fields: [sprintId], references: [id])
+  sprintId    Int?
+  teams       Team[]         @relation("TeamProjects")
+  members     User[]         @relation("ProjectHistory")
+  leaders     ProjectLeader[]
+  tasks       Task[]
+  messages    Message[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  rankings  Ranking[]
+  progress  Progress[]
+}
+
+model ProjectLeader {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  projectId Int
+  user      User     @relation(fields: [userId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id])
+  joinedAt  DateTime @default(now())
+
+  @@unique([userId, projectId])
+}
+
+model Task {
+  id          Int              @id @default(autoincrement())
+  title       String
+  description String?
+  status      String
+  priority    String
+  userId      Int?
+  projectId   Int
+  user        User?            @relation(fields: [userId], references: [id])
+  project     Project          @relation(fields: [projectId], references: [id])
+  assignments TaskAssignment[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model TaskAssignment {
+  id        Int      @id @default(autoincrement())
+  taskId    Int
+  userId    Int
+  task      Task     @relation(fields: [taskId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@unique([taskId, userId])
+}
+
+model Badge {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  type        String
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+}
+
+model Ranking {
+  id        Int      @id @default(autoincrement())
+  rank      Int
+  sprint    Sprint   @relation(fields: [sprintId], references: [id])
+  sprintId  Int
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sprintId, projectId])
+  @@unique([sprintId, rank])
+}
+
+model Progress {
+  id        Int      @id @default(autoincrement())
+  content   String
+  userId    Int
+  projectId Int
+  user      User     @relation(fields: [userId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, projectId])
+}
+
+model Prize {
+  id          Int           @id @default(autoincrement())
+  name        String
+  photo       String?
+  description String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  sprints     Sprint[]
+  winners     User[]
+  prizeClaims PrizeClaim[]
+}
+
+model PrizeClaim {
+  id           Int      @id @default(autoincrement())
+  prizeId      Int
+  userId       Int
+  prize        Prize    @relation(fields: [prizeId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
+  acknowledged Boolean  @default(false)  // Whether user has seen the prize notification
+  claimedAt    DateTime? // Make claimedAt optional since it's only set when actually claimed
+  createdAt    DateTime @default(now())
+
+  @@unique([prizeId, userId], name: "prizeId_userId")
+}

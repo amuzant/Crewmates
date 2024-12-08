@@ -1,0 +1,236 @@
+.chat-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chat-icon {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.chat-dropdown {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  width: 300px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 10px;
+}
+
+.chat-search {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-search input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.users-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.user-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.user-item:hover {
+  background-color: #f5f5f5;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.display-name {
+  font-weight: bold;
+}
+
+.username {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.role {
+  color: #888;
+  font-size: 0.8em;
+}
+
+.chat-window {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 300px;
+  background: #1a1a1a;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.chat-header {
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-user-info {
+  font-weight: bold;
+  color: #000;
+}
+
+.close-chat {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+}
+
+.close-chat:hover {
+  color: #333;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.chat-input {
+  padding: 12px;
+  border-top: 1px solid #eee;
+  background: white;
+}
+
+.chat-input input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #000;
+  background: white;
+}
+
+.chat-input input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+.dashboard-chat-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.dashboard-chat-button:hover {
+  background-color: #0056b3;
+}
+
+.dashboard-chat-button i {
+  font-size: 16px;
+}
+
+.message {
+  margin: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 70%;
+  color: #000;
+}
+
+.sent {
+  background-color: #007bff;
+  color: white;
+  margin-left: auto;
+}
+
+.received {
+  background-color: #e9ecef;
+  color: #000;
+}
+
+.message-content {
+  margin-bottom: 4px;
+}
+
+.message-time {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  color: inherit;
+}
+
+/* Add these styles for links in messages */
+.message-content a {
+  color: #007bff;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.message-content a:hover {
+  text-decoration: underline;
+}
+
+/* For sent messages, make links white */
+.sent .message-content a {
+  color: white;
+  text-decoration: underline;
+}
+
+.sent .message-content a:hover {
+  opacity: 0.9;
+}
+
+.messages-container {
+  padding: 1rem;
+  height: calc(100% - 100px); /* Adjust based on header and input heights */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 3px;
+} 
